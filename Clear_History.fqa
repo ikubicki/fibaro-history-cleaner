@@ -1,0 +1,95 @@
+{
+    "name": "Clear History",
+    "type": "com.fibaro.genericDevice",
+    "apiVersion": "1.2",
+    "initialProperties": {
+        "viewLayout": {
+            "$jason": {
+                "body": {
+                    "header": {
+                        "style": {
+                            "height": "0"
+                        },
+                        "title": "historyCleaner"
+                    },
+                    "sections": {
+                        "items": [
+                            {
+                                "components": [
+                                    {
+                                        "name": "label",
+                                        "style": {
+                                            "weight": "1.2"
+                                        },
+                                        "text": "Czyściciel logów",
+                                        "type": "label",
+                                        "visible": true
+                                    },
+                                    {
+                                        "style": {
+                                            "weight": "0.5"
+                                        },
+                                        "type": "space"
+                                    }
+                                ],
+                                "style": {
+                                    "weight": "1.2"
+                                },
+                                "type": "vertical"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "name": "button1",
+                                        "style": {
+                                            "weight": "1.2"
+                                        },
+                                        "text": "Wyczyść historię",
+                                        "type": "button",
+                                        "visible": true
+                                    },
+                                    {
+                                        "style": {
+                                            "weight": "0.5"
+                                        },
+                                        "type": "space"
+                                    }
+                                ],
+                                "style": {
+                                    "weight": "1.2"
+                                },
+                                "type": "vertical"
+                            }
+                        ]
+                    }
+                },
+                "head": {
+                    "title": "historyCleaner"
+                }
+            }
+        },
+        "uiCallbacks": [
+            {
+                "callback": "button1Event",
+                "eventType": "onReleased",
+                "name": "button1"
+            }
+        ],
+        "quickAppVariables": [],
+        "typeTemplateInitialized": true
+    },
+    "files": [
+        {
+            "name": "main",
+            "isMain": true,
+            "isOpen": true,
+            "content": "function QuickApp:onInit()\n    self.i18n = i18n:new(api.get(\"/settings/info\").defaultLanguage)\n    self:updateView(\"label\", \"text\", self.i18n:get(\"name\"))\n    self:updateView(\"button1\", \"text\", self.i18n:get(\"clear\"))\nend\n\nfunction QuickApp:button1Event()\n    local clearHistoryCallback = function()\n        self:updateView(\"label\", \"text\", string.format(self.i18n:get(\"last-update\"), os.date('%Y-%m-%d %H:%M:%S')))\n        self:updateView(\"button1\", \"text\", self.i18n:get(\"clear\"))\n    end\n    self:clearHistory(clearHistoryCallback)\nend\n\nfunction QuickApp:clearHistory(callback)\n    self:updateView(\"button1\", \"text\", self.i18n:get(\"clearing\"))\n    api.delete(\"/events/history?timestamp=2000000000\")\n    if callback then\n        callback()\n    end\nend"
+        },
+        {
+            "name": "i18n",
+            "isMain": false,
+            "isOpen": false,
+            "content": "--[[\nInternationalization tool\n@author ikubicki\n]]\nclass 'i18n'\n\nfunction i18n:new(langCode)\n    if phrases[langCode] == nil then\n        langCode = 'en'\n    end\n    self.phrases = phrases[langCode]\n    return self\nend\n\nfunction i18n:get(key)\n    if self.phrases[key] then\n        return self.phrases[key]\n    end\n    return key\nend\n\nphrases = {\n    pl = {\n        ['name'] = 'Czyściciel historii',\n        ['clear'] = 'Wyczyść historię',\n        ['clearing'] = 'Czyszczę historię...',\n        ['last-update'] = 'Ostatnia próba: %s',\n    },\n    en = {\n        ['name'] = 'History cleaner',\n        ['clear'] = 'Clear history',\n        ['clearing'] = 'Clearing history...',\n        ['last-update'] = 'Last attempt: %s',\n    },\n    de = {\n        ['name'] = 'Verlaufsreiniger',\n        ['clear'] = 'Verlauf löschen',\n        ['clearing'] = 'Verlauf löschen...',\n        ['last-update'] = 'Letzter Versuch: %s',\n    }\n}"
+        }
+    ]
+}
