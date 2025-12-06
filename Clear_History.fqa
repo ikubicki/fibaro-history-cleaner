@@ -1,7 +1,7 @@
 {
     "name": "Clear History",
     "type": "com.fibaro.genericDevice",
-    "apiVersion": "1.2",
+    "apiVersion": "1.3",
     "initialProperties": {
         "viewLayout": {
             "$jason": {
@@ -68,6 +68,81 @@
                 }
             }
         },
+        "uiView": [
+            {
+                "components": [
+                    {
+                        "name": "label",
+                        "style": {
+                            "weight": "1.0"
+                        },
+                        "text": "History cleaner",
+                        "type": "label",
+                        "visible": true
+                    }
+                ],
+                "style": {
+                    "weight": "1.0"
+                },
+                "type": "horizontal"
+            },
+            {
+                "components": [
+                    {
+                        "eventBinding": {
+                            "onLongPressDown": [
+                                {
+                                    "params": {
+                                        "actionName": "UIAction",
+                                        "args": [
+                                            "onLongPressDown",
+                                            "button1"
+                                        ]
+                                    },
+                                    "type": "deviceAction"
+                                }
+                            ],
+                            "onLongPressReleased": [
+                                {
+                                    "params": {
+                                        "actionName": "UIAction",
+                                        "args": [
+                                            "onLongPressReleased",
+                                            "button1"
+                                        ]
+                                    },
+                                    "type": "deviceAction"
+                                }
+                            ],
+                            "onReleased": [
+                                {
+                                    "params": {
+                                        "actionName": "UIAction",
+                                        "args": [
+                                            "onReleased",
+                                            "button1"
+                                        ]
+                                    },
+                                    "type": "deviceAction"
+                                }
+                            ]
+                        },
+                        "name": "button1",
+                        "style": {
+                            "weight": "1.0"
+                        },
+                        "text": "Clear history",
+                        "type": "button",
+                        "visible": true
+                    }
+                ],
+                "style": {
+                    "weight": "1.0"
+                },
+                "type": "horizontal"
+            }
+        ],
+        "useUiView": false,
         "uiCallbacks": [
             {
                 "callback": "button1Event",
@@ -76,20 +151,22 @@
             }
         ],
         "quickAppVariables": [],
-        "typeTemplateInitialized": true
+        "typeTemplateInitialized": true,
+        "userDescription": ""
     },
+    "initialInterfaces": [],
     "files": [
         {
             "name": "main",
             "isMain": true,
             "isOpen": true,
-            "content": "function QuickApp:onInit()\n    self.i18n = i18n:new(api.get(\"/settings/info\").defaultLanguage)\n    self:updateView(\"label\", \"text\", self.i18n:get(\"name\"))\n    self:updateView(\"button1\", \"text\", self.i18n:get(\"clear\"))\nend\n\nfunction QuickApp:button1Event()\n    local clearHistoryCallback = function()\n        self:updateView(\"label\", \"text\", string.format(self.i18n:get(\"last-update\"), os.date('%Y-%m-%d %H:%M:%S')))\n        self:updateView(\"button1\", \"text\", self.i18n:get(\"clear\"))\n    end\n    self:clearHistory(clearHistoryCallback)\nend\n\nfunction QuickApp:clearHistory(callback)\n    self:updateView(\"button1\", \"text\", self.i18n:get(\"clearing\"))\n    api.delete(\"/events/history?timestamp=2000000000\")\n    if callback then\n        callback()\n    end\nend"
+            "content": "--[[\nHistory cleaner\n@author ikubicki\n@version 1.1.0\n]]\n\n\nfunction QuickApp:onInit()\n    self.i18n = i18n:new(api.get(\"/settings/info\").defaultLanguage)\n    self:updateView(\"label\", \"text\", self.i18n:get(\"name\"))\n    self:updateView(\"button1\", \"text\", self.i18n:get(\"clear\"))\nend\n\nfunction QuickApp:button1Event()\n    local clearHistoryCallback = function()\n        self:updateView(\"label\", \"text\", string.format(self.i18n:get(\"last-update\"), os.date('%Y-%m-%d %H:%M:%S')))\n        self:updateView(\"button1\", \"text\", self.i18n:get(\"clear\"))\n    end\n    local clearDebugMessagesCallback = function()\n        self:clearHistory(clearHistoryCallback)\n    end\n    self:clearDebugMessages(clearDebugMessagesCallback)\nend\n\nfunction QuickApp:clearHistory(callback)\n    self:updateView(\"button1\", \"text\", self.i18n:get(\"clearing history\"))\n    api.delete(\"/events/history?timestamp=2000000000\")\n    QuickApp:trace(self.i18n:get(\"Device history cleared\"))\n    if callback then\n        callback()\n    end\nend\n\nfunction QuickApp:clearDebugMessages(callback)\n    self:updateView(\"button1\", \"text\", self.i18n:get(\"clearing console\"))\n    api.delete(\"/debugMessages\")\n    QuickApp:trace(self.i18n:get(\"Console logs cleared\"))\n    if callback then\n        callback()\n    end\nend"
         },
         {
             "name": "i18n",
             "isMain": false,
             "isOpen": false,
-            "content": "--[[\nInternationalization tool\n@author ikubicki\n]]\nclass 'i18n'\n\nfunction i18n:new(langCode)\n    if phrases[langCode] == nil then\n        langCode = 'en'\n    end\n    self.phrases = phrases[langCode]\n    return self\nend\n\nfunction i18n:get(key)\n    if self.phrases[key] then\n        return self.phrases[key]\n    end\n    return key\nend\n\nphrases = {\n    pl = {\n        ['name'] = 'Czyściciel historii',\n        ['clear'] = 'Wyczyść historię',\n        ['clearing'] = 'Czyszczę historię...',\n        ['last-update'] = 'Ostatnia próba: %s',\n    },\n    en = {\n        ['name'] = 'History cleaner',\n        ['clear'] = 'Clear history',\n        ['clearing'] = 'Clearing history...',\n        ['last-update'] = 'Last attempt: %s',\n    },\n    de = {\n        ['name'] = 'Verlaufsreiniger',\n        ['clear'] = 'Verlauf löschen',\n        ['clearing'] = 'Verlauf löschen...',\n        ['last-update'] = 'Letzter Versuch: %s',\n    }\n}"
+            "content": "--[[\nInternationalization tool\n@author ikubicki\n]]\nclass 'i18n'\n\nfunction i18n:new(langCode)\n    if phrases[langCode] == nil then\n        langCode = 'en'\n    end\n    self.phrases = phrases[langCode]\n    return self\nend\n\nfunction i18n:get(key)\n    if self.phrases[key] then\n        return self.phrases[key]\n    end\n    return key\nend\n\nphrases = {\n    pl = {\n        ['name'] = 'Czyściciel historii',\n        ['clear'] = 'Wyczyść historię',\n        ['clearing history'] = 'Czyszczę historię...',\n        ['clearing console'] = 'Czyszczę logi konsoli...',\n        ['Device history cleared'] = 'Historia urządzeń wyczyszczona',\n        ['Console logs cleared'] = 'Konsola wyczyszczona',\n        ['last-update'] = 'Ostatnia próba: %s',\n    },\n    en = {\n        ['name'] = 'History cleaner',\n        ['clear'] = 'Clear history',\n        ['clearing history'] = 'Clearing history...',\n        ['clearing console'] = 'Clearing console...',\n        ['Device history cleared'] = 'Device history cleared',\n        ['Console logs cleared'] = 'Console logs cleared',\n        ['last-update'] = 'Last attempt: %s',\n    },\n    de = {\n        ['name'] = 'Verlaufsreiniger',\n        ['clear'] = 'Verlauf löschen',\n        ['clearing history'] = 'Verlauf wird gelöscht...',\n        ['clearing console'] = 'Konsole wird geleert...',\n        ['Device history cleared'] = 'Gerätehistorie gelöscht',\n        ['Console logs cleared'] = 'Konsole gelöscht',\n        ['last-update'] = 'Letzter Versuch: %s',\n    }\n}"
         }
     ]
 }

@@ -23,19 +23,28 @@ phrases = {
     pl = {
         ['name'] = 'Czyściciel historii',
         ['clear'] = 'Wyczyść historię',
-        ['clearing'] = 'Czyszczę historię...',
+        ['clearing history'] = 'Czyszczę historię...',
+        ['clearing console'] = 'Czyszczę logi konsoli...',
+        ['Device history cleared'] = 'Historia urządzeń wyczyszczona',
+        ['Console logs cleared'] = 'Konsola wyczyszczona',
         ['last-update'] = 'Ostatnia próba: %s',
     },
     en = {
         ['name'] = 'History cleaner',
         ['clear'] = 'Clear history',
-        ['clearing'] = 'Clearing history...',
+        ['clearing history'] = 'Clearing history...',
+        ['clearing console'] = 'Clearing console...',
+        ['Device history cleared'] = 'Device history cleared',
+        ['Console logs cleared'] = 'Console logs cleared',
         ['last-update'] = 'Last attempt: %s',
     },
     de = {
         ['name'] = 'Verlaufsreiniger',
         ['clear'] = 'Verlauf löschen',
-        ['clearing'] = 'Verlauf löschen...',
+        ['clearing history'] = 'Verlauf wird gelöscht...',
+        ['clearing console'] = 'Konsole wird geleert...',
+        ['Device history cleared'] = 'Gerätehistorie gelöscht',
+        ['Console logs cleared'] = 'Konsole gelöscht',
         ['last-update'] = 'Letzter Versuch: %s',
     }
 }
