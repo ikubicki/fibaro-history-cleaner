@@ -28,6 +28,10 @@ phrases = {
         ['Device history cleared'] = 'Historia urządzeń wyczyszczona',
         ['Console logs cleared'] = 'Konsola wyczyszczona',
         ['last-update'] = 'Ostatnia próba: %s',
+        ['collection-history'] = 'Historia urządzeń',
+        ['collection-console'] = 'Konsola',
+        ['select-collections'] = 'Wybierz kolekcje do wyczyszczenia',
+        ['select-offset'] = 'Wybierz ilość dni do pozostawienia (historia urządzeń)',
     },
     en = {
         ['name'] = 'History cleaner',
@@ -37,6 +41,10 @@ phrases = {
         ['Device history cleared'] = 'Device history cleared',
         ['Console logs cleared'] = 'Console logs cleared',
         ['last-update'] = 'Last attempt: %s',
+        ['collection-history'] = 'Device history',
+        ['collection-console'] = 'Console logs',
+        ['select-collections'] = 'Select logs collections to clear',
+        ['select-offset'] = 'Select number of days to keep (device history)',
     },
     de = {
         ['name'] = 'Verlaufsreiniger',
@@ -46,5 +54,9 @@ phrases = {
         ['Device history cleared'] = 'Gerätehistorie gelöscht',
         ['Console logs cleared'] = 'Konsole gelöscht',
         ['last-update'] = 'Letzter Versuch: %s',
+        ['collection-history'] = 'Gerätehistorie',
+        ['collection-console'] = 'Konsole',
+        ['select-collections'] = 'Wählen Sie die zu löschenden Log-Sammlungen aus',
+        ['select-offset'] = 'Anzahl der Tage auswählen (Gerätehistorie)',
     }
 }

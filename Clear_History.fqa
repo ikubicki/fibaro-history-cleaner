@@ -21,8 +21,93 @@
                                         "style": {
                                             "weight": "1.2"
                                         },
-                                        "text": "Czyściciel logów",
+                                        "text": "History cleaner",
                                         "type": "label",
+                                        "visible": true
+                                    },
+                                    {
+                                        "style": {
+                                            "weight": "0.5"
+                                        },
+                                        "type": "space"
+                                    }
+                                ],
+                                "style": {
+                                    "weight": "1.2"
+                                },
+                                "type": "vertical"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "name": "collectionsSelected",
+                                        "options": [
+                                            {
+                                                "text": "History",
+                                                "type": "option",
+                                                "value": "history"
+                                            },
+                                            {
+                                                "text": "Debug console",
+                                                "type": "option",
+                                                "value": "console"
+                                            }
+                                        ],
+                                        "selectionType": "multi",
+                                        "style": {
+                                            "weight": "1.2"
+                                        },
+                                        "text": "Select logs collections",
+                                        "type": "select",
+                                        "values": [],
+                                        "visible": true
+                                    },
+                                    {
+                                        "style": {
+                                            "weight": "0.5"
+                                        },
+                                        "type": "space"
+                                    }
+                                ],
+                                "style": {
+                                    "weight": "1.2"
+                                },
+                                "type": "vertical"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "name": "label_offsetValue",
+                                        "style": {
+                                            "weight": "1.2"
+                                        },
+                                        "text": "Select days to leave",
+                                        "type": "label",
+                                        "visible": true
+                                    },
+                                    {
+                                        "style": {
+                                            "weight": "0.5"
+                                        },
+                                        "type": "space"
+                                    }
+                                ],
+                                "style": {
+                                    "weight": "1.2"
+                                },
+                                "type": "vertical"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "max": "100",
+                                        "min": "0",
+                                        "name": "offsetValue",
+                                        "style": {
+                                            "weight": "1.2"
+                                        },
+                                        "text": "",
+                                        "type": "slider",
                                         "visible": true
                                     },
                                     {
@@ -44,7 +129,7 @@
                                         "style": {
                                             "weight": "1.2"
                                         },
-                                        "text": "Wyczyść historię",
+                                        "text": "Clear history",
                                         "type": "button",
                                         "visible": true
                                     },
@@ -78,6 +163,103 @@
                         },
                         "text": "History cleaner",
                         "type": "label",
+                        "visible": true
+                    }
+                ],
+                "style": {
+                    "weight": "1.0"
+                },
+                "type": "horizontal"
+            },
+            {
+                "components": [
+                    {
+                        "eventBinding": {
+                            "onToggled": [
+                                {
+                                    "params": {
+                                        "actionName": "UIAction",
+                                        "args": [
+                                            "onToggled",
+                                            "collectionsSelected",
+                                            "$event.value"
+                                        ]
+                                    },
+                                    "type": "deviceAction"
+                                }
+                            ]
+                        },
+                        "name": "collectionsSelected",
+                        "options": [
+                            {
+                                "text": "History",
+                                "type": "option",
+                                "value": "history"
+                            },
+                            {
+                                "text": "Debug console",
+                                "type": "option",
+                                "value": "console"
+                            }
+                        ],
+                        "selectionType": "multi",
+                        "style": {
+                            "weight": "1.0"
+                        },
+                        "text": "Select logs collections",
+                        "type": "select",
+                        "values": [],
+                        "visible": true
+                    }
+                ],
+                "style": {
+                    "weight": "1.0"
+                },
+                "type": "horizontal"
+            },
+            {
+                "components": [
+                    {
+                        "name": "label_offsetValue",
+                        "style": {
+                            "weight": "1.0"
+                        },
+                        "text": "Select days to leave",
+                        "type": "label",
+                        "visible": true
+                    }
+                ],
+                "style": {
+                    "weight": "1.0"
+                },
+                "type": "horizontal"
+            },
+            {
+                "components": [
+                    {
+                        "eventBinding": {
+                            "onChanged": [
+                                {
+                                    "params": {
+                                        "actionName": "UIAction",
+                                        "args": [
+                                            "onChanged",
+                                            "offsetValue",
+                                            "$event.value"
+                                        ]
+                                    },
+                                    "type": "deviceAction"
+                                }
+                            ]
+                        },
+                        "max": "100",
+                        "min": "0",
+                        "name": "offsetValue",
+                        "style": {
+                            "weight": "1.0"
+                        },
+                        "text": "",
+                        "type": "slider",
                         "visible": true
                     }
                 ],
@@ -145,12 +327,41 @@
         "useUiView": false,
         "uiCallbacks": [
             {
-                "callback": "button1Event",
+                "callback": "onCollectionSelection",
+                "eventType": "onToggled",
+                "name": "collectionsSelected"
+            },
+            {
+                "callback": "onOffsetSelection",
+                "eventType": "onChanged",
+                "name": "offsetValue"
+            },
+            {
+                "callback": "onManualClear",
                 "eventType": "onReleased",
+                "name": "button1"
+            },
+            {
+                "callback": "",
+                "eventType": "onLongPressDown",
+                "name": "button1"
+            },
+            {
+                "callback": "",
+                "eventType": "onLongPressReleased",
                 "name": "button1"
             }
         ],
-        "quickAppVariables": [],
+        "quickAppVariables": [
+            {
+                "name": "collections",
+                "value": "history"
+            },
+            {
+                "name": "offset",
+                "value": "0"
+            }
+        ],
         "typeTemplateInitialized": true,
         "userDescription": ""
     },
@@ -160,13 +371,13 @@
             "name": "main",
             "isMain": true,
             "isOpen": true,
-            "content": "--[[\nHistory cleaner\n@author ikubicki\n@version 1.1.0\n]]\n\n\nfunction QuickApp:onInit()\n    self.i18n = i18n:new(api.get(\"/settings/info\").defaultLanguage)\n    self:updateView(\"label\", \"text\", self.i18n:get(\"name\"))\n    self:updateView(\"button1\", \"text\", self.i18n:get(\"clear\"))\nend\n\nfunction QuickApp:button1Event()\n    local clearHistoryCallback = function()\n        self:updateView(\"label\", \"text\", string.format(self.i18n:get(\"last-update\"), os.date('%Y-%m-%d %H:%M:%S')))\n        self:updateView(\"button1\", \"text\", self.i18n:get(\"clear\"))\n    end\n    local clearDebugMessagesCallback = function()\n        self:clearHistory(clearHistoryCallback)\n    end\n    self:clearDebugMessages(clearDebugMessagesCallback)\nend\n\nfunction QuickApp:clearHistory(callback)\n    self:updateView(\"button1\", \"text\", self.i18n:get(\"clearing history\"))\n    api.delete(\"/events/history?timestamp=2000000000\")\n    QuickApp:trace(self.i18n:get(\"Device history cleared\"))\n    if callback then\n        callback()\n    end\nend\n\nfunction QuickApp:clearDebugMessages(callback)\n    self:updateView(\"button1\", \"text\", self.i18n:get(\"clearing console\"))\n    api.delete(\"/debugMessages\")\n    QuickApp:trace(self.i18n:get(\"Console logs cleared\"))\n    if callback then\n        callback()\n    end\nend"
+            "content": "--[[\nHistory cleaner\n@author ikubicki\n@version 2.0.0\n]]\n\nQuickApp.logLevel = 9\n\nlocal function split(str, sep)\n    sep = sep or \",\"\n    local t = {}\n    for field in (str .. sep):gmatch(\"(.-)\" .. sep) do\n        field = field:match(\"^%s*(.-)%s*$\")\n        table.insert(t, field)\n    end\n    return t\nend\n\nfunction QuickApp:onInit()\n    self.i18n = i18n:new(api.get(\"/settings/info\").defaultLanguage)\n    self:updateView(\"label\", \"text\", self.i18n:get(\"name\"))\n    self:updateView(\"button1\", \"text\", self.i18n:get(\"clear\"))\n    self:updateView('collectionsSelected', \"label\", self.i18n:get(\"select-collections\"))\n    local collections = self:getVariable(\"collections\")\n    if collections == \"\" then\n        collections = \"console,history\"\n        self:setVariable(\"collections\", collections)\n    end\n    local offset = self:getVariable(\"offset\")\n    if offset == \"\" then \n        offset = \"0\"\n        self:setVariable(\"offset\", offset)\n    end\n    self:updateView(\"collectionsSelected\", \"selectedItems\", split(collections))\n\n    self:updateView(\"label_offsetValue\", \"text\", self.i18n:get(\"select-offset\"))\n    self:updateView(\"offsetValue\", \"min\", \"0\")\n    self:updateView(\"offsetValue\", \"max\", \"30\")\n    self:updateView(\"offsetValue\", \"value\", offset)\n    QuickApp:trace(self.i18n:get(\"name\") .. \" v 2.0.0\")\nend\n\nfunction QuickApp:onManualClear()\n    local clearHistoryCallback = function()\n        self:updateView(\"label\", \"text\", string.format(self.i18n:get(\"last-update\"), os.date('%Y-%m-%d %H:%M:%S')))\n        self:updateView(\"button1\", \"text\", self.i18n:get(\"clear\"))\n    end\n    local clearDebugMessagesCallback = function()\n        self:clearHistory(clearHistoryCallback)\n    end\n    self:clearDebugMessages(clearDebugMessagesCallback)\nend\n\nfunction QuickApp:onCollectionSelection(e)\n    local value = table.concat(e.values[1], \",\")\n    if value == \"\" then value = \"none\" end\n    self:setVariable(\"collections\", value)\n    self:updateView(\"collectionsSelected\", \"selectedItems\", split(value))\nend\n\nfunction QuickApp:onOffsetSelection(e)\n    self:setVariable(\"offset\", tostring(e.values[1]))\n    self:updateView('offsetValue', \"value\", tostring(e.values[1]))\nend\n\nfunction QuickApp:clearHistory(callback)\n    if not string.find(self:getVariable('collections'), \"history\", 1, true) then\n        -- QuickApp:debug(\"Skipping device history\")\n        if callback then\n            callback()\n        end\n        return\n    end\n    local timestamp = math.floor(os.time() - (self:getVariable('offset') * 86400))\n    self:updateView(\"button1\", \"text\", self.i18n:get(\"clearing history\"))\n    -- QuickApp:debug(\"/events/history?timestamp=\" .. timestamp)\n    api.delete(\"/events/history?timestamp=\" .. timestamp)\n    QuickApp:trace(self.i18n:get(\"Device history cleared\"))\n    if callback then\n        callback()\n    end\nend\n\nfunction QuickApp:clearDebugMessages(callback)\n    if not string.find(self:getVariable('collections'), \"console\", 1, true) then\n        -- QuickApp:debug(\"Skipping console logs\")\n        if callback then\n            callback()\n        end\n        return\n    end\n    self:updateView(\"button1\", \"text\", self.i18n:get(\"clearing console\"))\n    -- QuickApp:debug(\"/debugMessages\")\n    api.delete(\"/debugMessages\")\n    QuickApp:trace(self.i18n:get(\"Console logs cleared\"))\n    if callback then\n        callback()\n    end\nend"
         },
         {
             "name": "i18n",
             "isMain": false,
             "isOpen": false,
-            "content": "--[[\nInternationalization tool\n@author ikubicki\n]]\nclass 'i18n'\n\nfunction i18n:new(langCode)\n    if phrases[langCode] == nil then\n        langCode = 'en'\n    end\n    self.phrases = phrases[langCode]\n    return self\nend\n\nfunction i18n:get(key)\n    if self.phrases[key] then\n        return self.phrases[key]\n    end\n    return key\nend\n\nphrases = {\n    pl = {\n        ['name'] = 'Czyściciel historii',\n        ['clear'] = 'Wyczyść historię',\n        ['clearing history'] = 'Czyszczę historię...',\n        ['clearing console'] = 'Czyszczę logi konsoli...',\n        ['Device history cleared'] = 'Historia urządzeń wyczyszczona',\n        ['Console logs cleared'] = 'Konsola wyczyszczona',\n        ['last-update'] = 'Ostatnia próba: %s',\n    },\n    en = {\n        ['name'] = 'History cleaner',\n        ['clear'] = 'Clear history',\n        ['clearing history'] = 'Clearing history...',\n        ['clearing console'] = 'Clearing console...',\n        ['Device history cleared'] = 'Device history cleared',\n        ['Console logs cleared'] = 'Console logs cleared',\n        ['last-update'] = 'Last attempt: %s',\n    },\n    de = {\n        ['name'] = 'Verlaufsreiniger',\n        ['clear'] = 'Verlauf löschen',\n        ['clearing history'] = 'Verlauf wird gelöscht...',\n        ['clearing console'] = 'Konsole wird geleert...',\n        ['Device history cleared'] = 'Gerätehistorie gelöscht',\n        ['Console logs cleared'] = 'Konsole gelöscht',\n        ['last-update'] = 'Letzter Versuch: %s',\n    }\n}"
+            "content": "--[[\nInternationalization tool\n@author ikubicki\n]]\nclass 'i18n'\n\nfunction i18n:new(langCode)\n    if phrases[langCode] == nil then\n        langCode = 'en'\n    end\n    self.phrases = phrases[langCode]\n    return self\nend\n\nfunction i18n:get(key)\n    if self.phrases[key] then\n        return self.phrases[key]\n    end\n    return key\nend\n\nphrases = {\n    pl = {\n        ['name'] = 'Czyściciel historii',\n        ['clear'] = 'Wyczyść historię',\n        ['clearing history'] = 'Czyszczę historię...',\n        ['clearing console'] = 'Czyszczę logi konsoli...',\n        ['Device history cleared'] = 'Historia urządzeń wyczyszczona',\n        ['Console logs cleared'] = 'Konsola wyczyszczona',\n        ['last-update'] = 'Ostatnia próba: %s',\n        ['collection-history'] = 'Historia urządzeń',\n        ['collection-console'] = 'Konsola',\n        ['select-collections'] = 'Wybierz kolekcje do wyczyszczenia',\n        ['select-offset'] = 'Wybierz ilość dni do pozostawienia (historia urządzeń)',\n    },\n    en = {\n        ['name'] = 'History cleaner',\n        ['clear'] = 'Clear history',\n        ['clearing history'] = 'Clearing history...',\n        ['clearing console'] = 'Clearing console...',\n        ['Device history cleared'] = 'Device history cleared',\n        ['Console logs cleared'] = 'Console logs cleared',\n        ['last-update'] = 'Last attempt: %s',\n        ['collection-history'] = 'Device history',\n        ['collection-console'] = 'Console logs',\n        ['select-collections'] = 'Select logs collections to clear',\n        ['select-offset'] = 'Select number of days to keep (device history)',\n    },\n    de = {\n        ['name'] = 'Verlaufsreiniger',\n        ['clear'] = 'Verlauf löschen',\n        ['clearing history'] = 'Verlauf wird gelöscht...',\n        ['clearing console'] = 'Konsole wird geleert...',\n        ['Device history cleared'] = 'Gerätehistorie gelöscht',\n        ['Console logs cleared'] = 'Konsole gelöscht',\n        ['last-update'] = 'Letzter Versuch: %s',\n        ['collection-history'] = 'Gerätehistorie',\n        ['collection-console'] = 'Konsole',\n        ['select-collections'] = 'Wählen Sie die zu löschenden Log-Sammlungen aus',\n        ['select-offset'] = 'Anzahl der Tage auswählen (Gerätehistorie)',\n    }\n}"
         }
     ]
 }
